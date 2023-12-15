@@ -1,0 +1,39 @@
+
+Found issues:
+- Re-change hero missile to beam
+
+To do:
+- Health bars
+- Kitsune missile speed
+- Dialog UI check
+- Party change system
+    - Each hero should have Q and E abilities, and an R super
+    - Actual dash instead of teleport, SHIFT key
+- Smartphone UI
+- Conversation UI
+- Inventory UI
+    - CHeck Item UI
+- Equipment UI
+- Level system
+- Elemental damage
+
+To check:
+- Molotov damage
+
+Advanced To do:
+- Save hero details in JSON format
+- Save item details in JSON format
+
+On Unity Editor:
+- Add tags for all objects
+- Samurai character
+
+Left off at:
+- UI/Inventory/GameUI_ChkItm.cs
+
+Not in Unity Editor:
+
+
+Add these skills to Rifleman:
+- Skill_Shotgun
+- 

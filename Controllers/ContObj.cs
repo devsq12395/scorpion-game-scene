@@ -1,0 +1,372 @@
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
+
+public class ContObj : MonoBehaviour {
+
+    public static ContObj I;
+	public void Awake(){ I = this; }
+
+    public int curID = 0;
+
+    void Start() {
+        
+    }
+
+    void Update() {
+        
+    }
+
+    // Create
+    public GameObject create_obj (string _name, Vector2 _pos, int _player) {
+        GameObject _obj = DB_Objects.I.get_game_obj (_name);
+        InGameObject _comp = _obj.GetComponent <InGameObject>();
+
+        _obj.transform.position = _pos;
+        _comp.owner = _player;
+        
+        set_default_skills (_comp);
+
+        return _obj;
+    }
+
+    public GameObject create_missile (string _name, Vector2 _pos, int _player, float _ang) {
+        GameObject _obj = create_obj (_name, _pos, _player);
+        InGameObject _comp = _obj.GetComponent <InGameObject> ();
+        
+        change_facing (_comp, (Mathf.Abs (_ang) < 180) ? "left" : "right");
+
+        const_move_ang_set (_comp, _ang, _comp.speed);
+
+        return _obj;
+    }
+    
+    // Update
+    public void update_obj (InGameObject _obj){
+        _obj.curPos.x = _obj.gameObject.transform.position.x;
+        _obj.curPos.y = _obj.gameObject.transform.position.y;
+
+        calc_z_pos (_obj);
+
+        input_move_update (_obj);
+        const_move_ang_update (_obj);
+        const_move_dir_update (_obj);
+        move_walk_to_pos_update (_obj);
+        move_bounds (_obj);
+
+        check_anim (_obj);
+        
+        propell_update (_obj);
+
+        pos_limit (_obj);
+
+        update_buffs (_obj);
+        
+        timed_life_update (_obj);
+
+        _obj.gameObject.transform.position = new Vector3 (_obj.curPos.x, _obj.curPos.y, _obj.zPos);
+
+        update_render (_obj);
+    }
+    
+    public void update_every_10th_ms (InGameObject _obj){
+        mp_regen (_obj);
+    }
+
+    // Animation
+    private void calc_z_pos (InGameObject _obj) {
+        Vector3 _pos = _obj.curPos;
+        switch (_obj.type) {
+            case "missile":
+                _obj.zPos = (_pos.y - 110) / 100;
+                break;
+
+            default:
+                _obj.zPos = (_pos.y - 100) / 100;
+                break;
+        }
+        _pos.z = _obj.zPos;
+
+        _obj.curPos = _pos;
+    }
+    
+    public void check_anim (InGameObject _obj) {
+        if (!_obj.hasAnim) return;
+        
+        // Check anim conditions
+        _obj.isRunning = (((_obj.isWalk || _obj.moveToPos_isOn) && !_obj.isKnocked) ? true : false);
+
+        // Set anim
+        if (_obj.anim.parameters.Any(param => param.name == "isRunning")) {
+            _obj.anim.SetBool ("isRunning", _obj.isRunning);
+            _obj.anim.SetBool ("isAtk", _obj.isAtk);
+            _obj.anim.SetInteger ("toAnim", _obj.toAnim);
+        }
+    }
+
+    public void change_facing (InGameObject _obj, string _facing){
+        _obj.facing = _facing;
+
+        Vector2 _curScale = _obj.gameObject.transform.localScale;
+        float scaleX = Mathf.Abs (_curScale.x);
+        _curScale.x = ((_obj.facing == "left") ? -scaleX : scaleX);
+        _obj.gameObject.transform.localScale = _curScale;
+    }
+
+    public void change_obj_angle (InGameObject _obj, float _ang) {
+        _obj.gameObject.transform.rotation = Quaternion.Euler (0f, 0f, _ang);
+    }
+
+    private void update_render (InGameObject _obj){
+        if (Vector2.Distance(_obj.gameObject.transform.position, Camera.main.transform.position) > GameConstants.RENDER_DIST) {
+            _obj.gameObject.GetComponent<Renderer>().enabled = false;
+        } else {
+            _obj.gameObject.GetComponent<Renderer>().enabled = true;
+        }
+    }
+
+    // Movement
+    public void input_move (InGameObject _obj, Vector2 _value){
+        if (_obj.isAtk) {
+            _obj.isWalk = false;
+            return; 
+        }
+        else if (_obj.isKnocked) {
+            if (_obj.rb.velocity.magnitude < 1f){
+                _obj.isKnocked = false;
+                change_velocity (_obj, new Vector3 (0, 0, 0));
+            }
+            return;
+        }
+        
+        _obj.movInput.x = (_value.x > 0f) ? 1 : (_value.x < 0f) ? -1 : 0;
+        _obj.movInput.y = (_value.y > 0f) ? 1 : (_value.y < 0f) ? -1 : 0;
+
+        if (_obj.movInput.x != 0) {
+            change_facing (_obj, (_obj.movInput.x < 0) ? "left" : "right");
+        }
+
+        _obj.isWalk = (_obj.movInput.x != 0 || _obj.movInput.y != 0);
+    }
+
+    public void input_move_update (InGameObject _obj){
+        if (!_obj.isWalk) return;
+
+        _obj.nxtPos.x = _obj.movInput.x * 100;
+        _obj.nxtPos.y = _obj.movInput.y * 100;
+
+        _obj.walkTargPos.x = _obj.gameObject.transform.position.x + _obj.nxtPos.x;
+        _obj.walkTargPos.y = _obj.gameObject.transform.position.y + _obj.nxtPos.y;
+        _obj.curPos = Vector2.MoveTowards (_obj.curPos, _obj.walkTargPos, _obj.speed * Time.deltaTime);
+        InGameCamera.I.point_to_target ();
+    }
+
+    public void move_walk_to_pos (InGameObject _obj, Vector2 _dir){
+        _obj.moveToPos_isOn = true;
+        _obj.moveToPos_pos = _dir;
+    }
+
+    public void move_walk_to_pos_stop (InGameObject _obj){
+        _obj.moveToPos_isOn = false;
+    }
+
+    public void move_walk_to_pos_update (InGameObject _obj){
+        if (!_obj.moveToPos_isOn) return;
+
+        _obj.curPos = Vector2.MoveTowards (_obj.curPos, _obj.moveToPos_pos, _obj.speed * Time.deltaTime);
+
+        if (Calculator.I.get_dist_from_2_points (_obj.moveToPos_pos, _obj.curPos) <= 0.1f) {
+            _obj.moveToPos_isOn = false;
+        }
+    }
+
+    public void propell_to_angle (InGameObject _obj, float _ang, float _spd, float _drag, bool _changeAng = false) {
+        if (_changeAng) change_obj_angle (_obj, _ang);
+
+        _obj.isKnocked = true;
+        Vector3 _vel = new Vector3(_spd * Mathf.Cos(_ang * Mathf.Deg2Rad), _spd * Mathf.Sin(_ang * Mathf.Deg2Rad), 0);
+        _obj.knockDrag = _drag;
+        change_velocity (_obj, _vel);
+    }
+
+    public void change_velocity (InGameObject _obj, Vector3 _newVel) {
+        _obj.rb.velocity = _newVel;
+    }
+
+    public void propell_update (InGameObject _obj) {
+        if (!_obj.isKnocked) return;
+
+        _obj.rb.velocity -= _obj.rb.velocity * _obj.knockDrag * Time.fixedDeltaTime;
+    }
+
+    public void const_move_ang_set (InGameObject _obj, float _ang, float _spd = 0f){
+        _obj.constMovAng_isOn = true;
+        if (_spd == 0f) _spd = _obj.speed;
+        _obj.constMovAng_spd = _spd;
+        _obj.constMovAng_ang = _ang;
+    }
+
+    public void const_move_ang_update (InGameObject _obj){
+        if (!_obj.constMovAng_isOn) return;
+
+        Vector3 _curPos = _obj.curPos;
+        float _yPos = _curPos.y + _obj.constMovAng_spd * Mathf.Sin(_obj.constMovAng_ang * Mathf.Deg2Rad);
+        Vector3 _newPos = new Vector3(
+            _curPos.x + _obj.constMovAng_spd * Mathf.Cos(_obj.constMovAng_ang * Mathf.Deg2Rad), 
+            _yPos,
+            _obj.zPos
+        );
+
+        if (_obj.isRotate) {
+            _obj.gameObject.transform.rotation = Quaternion.Euler (0, 0, _obj.constMovAng_ang);
+        }
+
+        _obj.curPos = _newPos;
+    }
+
+    public void const_move_dir_set (InGameObject _obj, Vector2 _dir, float _spd = 0f){
+        _obj.constMovDir_isOn = true;
+        if (_spd == 0f) _spd = _obj.speed;
+        _obj.constMovDir_spd = _spd;
+        _obj.constMovDir_dir = _dir;
+    }
+
+    public void const_move_dir_update (InGameObject _obj){
+        if (!_obj.constMovDir_isOn) return;
+
+        Vector2 _pos = _obj.curPos;
+        // transform.Translate(_dir * speed * Time.deltaTime);
+        _obj.curPos = Vector2.MoveTowards (_pos, _obj.constMovDir_dir, _obj.speed * Time.deltaTime);
+    }
+
+    private void move_bounds (InGameObject _obj){
+        if (DB_Conditions.I.is_check_border (_obj)) return;
+        
+        DB_Maps.mapDetails _details = ContMap.I.details;
+        float _xL = _details.size.x, _yL = _details.size.y;
+        if (_obj.curPos.x > _xL)                _obj.curPos.x = _xL - 0.1f;
+        else if (_obj.curPos.x < -_xL)          _obj.curPos.x = -_xL + 0.1f;
+        if (_obj.curPos.y > _yL)                _obj.curPos.y = _yL - 0.1f;
+        else if (_obj.curPos.y < -_yL)          _obj.curPos.y = -_yL + 0.1f;
+    }
+
+    public void move_instant (InGameObject _obj, Vector2 _pos) {
+        _obj.gameObject.transform.position = new Vector3 (_pos.x, _pos.y, _obj.zPos);
+    }
+
+    public void move_forward_instant (InGameObject _obj, float _ang, float _dis) {
+        move_instant (_obj, Calculator.I.get_next_point_in_direction (_obj.curPos, _ang, _dis));
+    }
+
+    public void pos_limit (InGameObject _obj){
+        if (!DB_Conditions.I.is_kill_on_border_pass (_obj)) return;
+        
+        Vector2 _pos = _obj.curPos;
+        float _lim = 3000f;
+        
+        if (_pos.x > _lim || _pos.x < -_lim || _pos.y > _lim || _pos.y < -_lim) {
+            Destroy (_obj.gameObject);
+        }
+    }
+    
+    public void stop_obj (InGameObject _obj){
+        _obj.rb.velocity = Vector3.zero;
+        _obj.walkTargPos = Vector3.zero;
+    }
+    
+    // Stats
+    private void mp_regen (InGameObject _obj){
+        if (!DB_Conditions.I.can_mp_regen (_obj)) return;
+        
+        _obj.mp += _obj.mpRegen;
+        if (_obj.mp > _obj.mpMax) _obj.mp = _obj.mpMax;
+    }
+
+    // Skill / Attack
+    public void use_skill_active (InGameObject _obj, string _skillName){
+        foreach (SkillTrig _skill in _obj.skills) {
+            if (_skill.skillName != _skillName)     continue;
+
+            _skill.use_active ();
+            break;
+        }
+    }
+
+    public SkillTrig get_skill_with_skill_slot (InGameObject _obj, string _skillSlot) {
+        SkillTrig _ret = null;
+
+        foreach (SkillTrig _skill in _obj.skills) {
+            if (_skill.skillSlot == _skillSlot) {
+                _ret = _skill;
+                break;
+            }
+        }
+
+        return _ret;
+    }
+
+    public void set_default_skills (InGameObject _obj){
+        _obj.skills.AddRange (_obj.gameObject.GetComponents <SkillTrig> ());
+    }
+    
+    // Events
+    public List<EvtTrig> get_evts_with_trigger_name (InGameObject _obj, string _trigName){
+        List<EvtTrig> _ret = new List<EvtTrig> ();
+        List<EvtTrig> _evts = new List<EvtTrig> ();
+        _evts.AddRange (_obj.gameObject.GetComponents <EvtTrig> ());
+        
+        foreach (EvtTrig _evt in _evts) {
+            if (_evt.evtTrigger == _trigName) {
+                _ret.Add (_evt);
+            }
+        }
+        
+        return _ret;
+    }
+    
+    public void evt_on_death (InGameObject _obj){
+        List<EvtTrig> _evts = get_evts_with_trigger_name (_obj, "death");
+        foreach (EvtTrig _evt in _evts) {
+            _evt.use ();
+        }
+    }
+
+    // Buffs
+    public bool get_has_buff (InGameObject _obj, string _buff) {
+        foreach (ContBuffs.buff _cur in _obj.buffs) {
+            if (_cur.name == _buff) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void update_buffs (InGameObject _obj){
+        List<int> _toRmv = new List<int> ();
+
+        ContBuffs.buff _cur;
+        for (int i = 0; i < _obj.buffs.Count; i++) {
+            _cur = _obj.buffs [i];
+            _cur.dur -= Time.deltaTime;
+            _obj.buffs [i] = _cur;
+
+            if (_cur.dur <= 0) {
+                _toRmv.Add (i);
+            }
+        }
+
+        for (int i = _toRmv.Count - 1; i >= 0; i--) {
+            _obj.buffs.RemoveAt (_toRmv [i]);
+        }
+    }
+    
+    private void timed_life_update (InGameObject _obj){
+        if (_obj.timedLife <= 0) return;
+        
+        _obj.timedLife -= Time.deltaTime;
+        if (_obj.timedLife <= 0) {
+            ContDamage.I.kill (_obj);
+        }
+    }
+}
