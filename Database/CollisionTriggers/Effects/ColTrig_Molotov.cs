@@ -14,7 +14,7 @@ public class ColTrig_Molotov : ColTrig {
         InGameObject _this = GetComponent <InGameObject> ();
 
         ContDamage.I.damage (_this, _hit, dam, damTags);
-        ContBuffs.I.add_buff (_this, "molotov");
+        ContBuffs.I.add_buff (_hit, "molotov");
     }
 
     public override void on_hit_ally (InGameObject _hit){

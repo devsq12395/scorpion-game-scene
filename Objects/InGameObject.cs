@@ -39,6 +39,7 @@ public class InGameObject : MonoBehaviour {
     // Move to ang
     public bool constMovAng_isOn = false;
     public float constMovAng_spd, constMovAng_ang;
+    public string propellType = "";
     
     // Move to dir
     public bool constMovDir_isOn = false;
@@ -50,7 +51,7 @@ public class InGameObject : MonoBehaviour {
     public Vector2 moveToPos_pos;
 
     // Booleans
-    public bool isRunning, isAtk, isKnocked, isInvul;
+    public bool isRunning, isAtk, isInvul;
 
     // Misc
     public float knockDrag;

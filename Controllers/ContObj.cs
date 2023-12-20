@@ -95,7 +95,7 @@ public class ContObj : MonoBehaviour {
         if (!_obj.hasAnim) return;
         
         // Check anim conditions
-        _obj.isRunning = (((_obj.isWalk || _obj.moveToPos_isOn) && !_obj.isKnocked) ? true : false);
+        _obj.isRunning = (((_obj.isWalk || _obj.moveToPos_isOn) && _obj.propellType != "") ? true : false);
 
         // Set anim
         if (_obj.anim.parameters.Any(param => param.name == "isRunning")) {
@@ -127,16 +127,32 @@ public class ContObj : MonoBehaviour {
     }
 
     // Movement
+    /*
+        LIST OF MOVEMENT TYPES:
+        - input_move
+        - move_walk_to_pos
+        - propell_to_angle (InGameObject _obj, float _ang, float _spd, float _drag, bool _changeAng = false)
+        - change_velocity
+        - const_move_ang_set
+        - const_move_dir_set
+        - move_instant
+        - move_forward_instant
+        - stop_obj
+    */
     public void input_move (InGameObject _obj, Vector2 _value){
         if (_obj.isAtk) {
             _obj.isWalk = false;
             return; 
         }
-        else if (_obj.isKnocked) {
+        else if (_obj.propellType == "knocked") {
             if (_obj.rb.velocity.magnitude < 1f){
-                _obj.isKnocked = false;
+                _obj.propellType = "";
                 change_velocity (_obj, new Vector3 (0, 0, 0));
             }
+            return;
+        }
+        else if (_obj.propellType != ""){
+            _obj.isWalk = false;
             return;
         }
         
@@ -181,10 +197,14 @@ public class ContObj : MonoBehaviour {
         }
     }
 
-    public void propell_to_angle (InGameObject _obj, float _ang, float _spd, float _drag, bool _changeAng = false) {
+    public void propell_to_angle (InGameObject _obj, float _ang, float _spd, float _drag, string _propellType, bool _changeAng = false) {
+        /*
+            KNOWN PROPELL TYPES:
+            - "knocked", "dash"
+        */
         if (_changeAng) change_obj_angle (_obj, _ang);
 
-        _obj.isKnocked = true;
+        _obj.propellType = _propellType;
         Vector3 _vel = new Vector3(_spd * Mathf.Cos(_ang * Mathf.Deg2Rad), _spd * Mathf.Sin(_ang * Mathf.Deg2Rad), 0);
         _obj.knockDrag = _drag;
         change_velocity (_obj, _vel);
@@ -195,9 +215,13 @@ public class ContObj : MonoBehaviour {
     }
 
     public void propell_update (InGameObject _obj) {
-        if (!_obj.isKnocked) return;
+        if (_obj.propellType == "" || _obj.propellType == "missile") return;
 
         _obj.rb.velocity -= _obj.rb.velocity * _obj.knockDrag * Time.fixedDeltaTime;
+        if (_obj.rb.velocity.magnitude < 1f){
+            _obj.propellType = "";
+            change_velocity (_obj, new Vector3 (0, 0, 0));
+        }
     }
 
     public void const_move_ang_set (InGameObject _obj, float _ang, float _spd = 0f){

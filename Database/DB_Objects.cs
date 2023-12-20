@@ -17,6 +17,7 @@ public class DB_Objects : MonoBehaviour {
 
     // Effects
     public GameObject explosion1, explosion1_mini, molotovEfct;
+    public GameObject damTxt;
 
     void Start() {
         
@@ -51,6 +52,8 @@ public class DB_Objects : MonoBehaviour {
             case "explosion1":              _refObj = explosion1; break;
             case "explosion1_mini":         _refObj = explosion1_mini; break;
             case "molotovEfct":             _refObj = molotovEfct; break;
+                
+            case "damTxt":                  _refObj = damTxt; break;
 
             default: _refObj = dummy; break;
         }

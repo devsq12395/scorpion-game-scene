@@ -8,7 +8,9 @@ public class Skill_Dash : SkillTrig {
     
     public override void use_active (){
         float DIST = 3f;
-
+        
+        // INSTANT TELE - UNUSED
+        /*
         InGameObject _ownerComp = gameObject.GetComponent <InGameObject> ();
 
         Vector2 _pos = gameObject.transform.position,
@@ -19,6 +21,15 @@ public class Skill_Dash : SkillTrig {
 
         ContObj.I.change_facing (_ownerComp, (Calculator.I.is_mouse_left_of_object (_ownerComp) ? "left" : "right"));
         ContObj.I.move_forward_instant (_ownerComp, _ang, DIST);
+        InGameCamera.I.point_to_target ();
+        */
+        
+        // PROPELL DASH
+        InGameObject _ownerComp = gameObject.GetComponent <InGameObject> ();
+        Vector2 _pos = gameObject.transform.position;
+
+        ContObj.I.change_facing (_ownerComp, (Calculator.I.is_mouse_left_of_object (_ownerComp) ? "left" : "right"));
+        ContObj.I.propell_to_angle (_ownerComp, Calculator.I.get_ang_from_point_and_mouse (_pos), 50f, 1f, "dash");
         InGameCamera.I.point_to_target ();
     }
 }

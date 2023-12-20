@@ -32,7 +32,7 @@ public class Game : MonoBehaviour {
         // Setups
         ContMap.I.setup_map ();
         ContPlayer.I.setup_player ();
-        
+        GameUI_InGameTxt.I.setup ();
     }
 
     void Update() {
