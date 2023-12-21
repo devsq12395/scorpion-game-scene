@@ -94,14 +94,20 @@ public class ContObj : MonoBehaviour {
     public void check_anim (InGameObject _obj) {
         if (!_obj.hasAnim) return;
         
-        // Check anim conditions
-        _obj.isRunning = (((_obj.isWalk || _obj.moveToPos_isOn) && _obj.propellType != "") ? true : false);
-
-        // Set anim
-        if (_obj.anim.parameters.Any(param => param.name == "isRunning")) {
+        // Running / Attack
+        if (_obj.anim.parameters.Any(param => param.name == "isRunning")) { // Check if "isRunning" animation exists in the object
+            _obj.isRunning = (((_obj.isWalk || _obj.moveToPos_isOn) && _obj.propellType == "") ? true : false);
+            
             _obj.anim.SetBool ("isRunning", _obj.isRunning);
             _obj.anim.SetBool ("isAtk", _obj.isAtk);
             _obj.anim.SetInteger ("toAnim", _obj.toAnim);
+        }
+        
+        // Dash
+        if (_obj.anim.parameters.Any(param => param.name == "isDash")) {
+            _obj.isDash = (_obj.propellType == "dash");
+            
+            _obj.anim.SetBool ("isDash", _obj.isDash);
         }
     }
 

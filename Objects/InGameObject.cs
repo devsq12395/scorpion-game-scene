@@ -51,7 +51,7 @@ public class InGameObject : MonoBehaviour {
     public Vector2 moveToPos_pos;
 
     // Booleans
-    public bool isRunning, isAtk, isInvul;
+    public bool isRunning, isAtk, isInvul, isDash;
 
     // Misc
     public float knockDrag;

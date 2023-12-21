@@ -4,10 +4,10 @@ Found issues:
 - Re-change hero missile to beam
 
 To do:
-- Dash anim
-    - "isDash" anim param for change_anim at InGameObject.cs
 - Add shotgun skill
-    - Shotgun missile and lightning effects
+    - Missile sprite
+    - Shotgun missile duration
+    - "Shocked" debuff
 - Health bars
 - Kitsune missile speed
 - Dialog UI check
@@ -39,8 +39,3 @@ Left off at:
 - UI/Inventory/GameUI_ChkItm.cs
 
 Not in Unity Editor:
-
-
-Add these skills to Rifleman:
-- Skill_Shotgun
-- 
