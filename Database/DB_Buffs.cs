@@ -29,6 +29,7 @@ public class DB_Buffs : MonoBehaviour {
         switch (_name) {
             case "invulnerable": return 0.5f;
             case "molotov": return 1f;
+            case "grounded": return 1f;
             default: return 1f;
         }
     }

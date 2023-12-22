@@ -42,7 +42,8 @@ public class Calculator : MonoBehaviour {
     }
 
     public Vector2 get_next_point_in_direction (Vector2 _pos, float _ang, float _dist){
-        Vector2 _ret = new Vector2 (_pos.x + Mathf.Cos (_ang) * _dist, _pos.y + Mathf.Sin (_ang) * _dist);
+        float _angRad = _ang * Mathf.Deg2Rad;
+        Vector2 _ret = new Vector2 (_pos.x + Mathf.Cos (_angRad) * _dist, _pos.y + Mathf.Sin (_angRad) * _dist);
         
         return _ret;
     }
