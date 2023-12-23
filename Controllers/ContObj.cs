@@ -383,6 +383,8 @@ public class ContObj : MonoBehaviour {
 
             if (_cur.dur <= 0) {
                 _toRmv.Add (i);
+            } else {
+                DB_Buffs.I.update_buff_trigger (_obj, _obj.buffs [i]);
             }
         }
 

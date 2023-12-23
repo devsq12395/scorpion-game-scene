@@ -18,6 +18,9 @@ public class DB_Objects : MonoBehaviour {
     // Effects
     public GameObject explosion1, explosion1_mini, molotovEfct;
     public GameObject damTxt;
+    
+    // Buffs
+    public GameObject burn;
 
     void Start() {
         
@@ -54,6 +57,9 @@ public class DB_Objects : MonoBehaviour {
             case "molotovEfct":             _refObj = molotovEfct; break;
                 
             case "damTxt":                  _refObj = damTxt; break;
+                
+            // Buffs
+            case "buffAtch_burn":           _refObj = burn; break;
 
             default: _refObj = dummy; break;
         }

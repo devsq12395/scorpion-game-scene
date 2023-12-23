@@ -22,6 +22,19 @@ public class ContDamage : MonoBehaviour {
             kill (_def);
         }
     }
+    
+    public void lose_hp (InGameObject _def, int _dam) {
+        if (!DB_Conditions.I.dam_condition (_atk, _def)) return;
+        
+        int _dam = _damOrig;
+        
+        _dam = check_tag_effects (_atk, _def, _dam, _tags);
+
+        _def.hp -= _dam;
+        if (_def.hp < 1) _def.hp = 1;
+
+        post_dam_events (_atk, _def, _dam);
+    }
 
     public void kill (InGameObject _def){
         ContObj.I.evt_on_death (_def);
