@@ -13,6 +13,7 @@ public class DB_Buffs : MonoBehaviour {
 
         string _atchName = (get_buff_has_attach (_name) ? "buffAtch_" + _name : "dummy");
         _new.attach = DB_Objects.I.get_game_obj (_atchName);
+        _new.atchOffset = get_buff_attach_offset (_name);
 
         return _new;
     }
@@ -42,9 +43,19 @@ public class DB_Buffs : MonoBehaviour {
             case "burn":
                 if (ContObj.I.get_has_buff (_obj, "burned")) return;
                 
-                ContDamage.I.lose_hp (_obj, 1);
+                ContDamage.I.lose_hp (_obj, 1, new List<string>{"burn"});
                 ContBuffs.I.add_buff (_obj, "burned");
                 break;
         }
+    }
+    
+    public Vector3 get_buff_attach_offset (string _buff){
+        Vector3 _ret = new Vector3 (0, 0, 0);
+        
+        switch (_buff) {
+            case "burn": _ret.y = 0f; break;
+        }
+        
+        return _ret;
     }
 }

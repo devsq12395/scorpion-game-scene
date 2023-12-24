@@ -23,13 +23,13 @@ public class TestMap1 : MonoBehaviour {
     }
 
     public void create_map_objs (){
-        for (var l = 0; l < 1; l++) {
+        for (var l = 0; l < 4; l++) {
             Vector2 _rand = new Vector2 (
                 Random.Range (-ContMap.I.details.size.x, ContMap.I.details.size.x),
                 Random.Range (-ContMap.I.details.size.y, ContMap.I.details.size.y)
             );
 
-            ContObj.I.create_obj ("orcShaman", _rand, 2);
+            ContObj.I.create_obj ("kitsune", _rand, 2);
         }
     }
 

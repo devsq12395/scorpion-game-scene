@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class DB_Conditions : MonoBehaviour {
 
@@ -54,7 +55,13 @@ public class DB_Conditions : MonoBehaviour {
     
     // Battle
     public bool dam_condition (InGameObject _atk, InGameObject _def) {
+        // Does not require an attacker conditions here
         if (ContObj.I.get_has_buff (_def, "invulnerable"))                 return false;
+
+        // Requires an attacker conditions here
+        if (_atk != null) {
+            
+        }
 
         return true;
     }
@@ -80,6 +87,49 @@ public class DB_Conditions : MonoBehaviour {
         if (_obj.type == "unit") return false;
         
         return true;
+    }
+    
+    // Elemental Effects
+    public bool check_tags_fire (List<string> _tags){
+        return _tags.Any(tag => tag == "burn" || tag == "fire");
+    }
+    
+    public bool buff_names_fire (List<ContBuffs.buff> _buffs){
+        return _buffs.Any(buff => buff.name == "burn" || buff.name == "burned");
+    }
+    
+    public bool check_tags_electric (List<string> _tags){
+        return _tags.Any(tag => tag == "electric");
+    }
+    
+     public bool buff_names_electric (List<ContBuffs.buff> _buffs){
+        return _buffs.Any(buff => buff.name == "charged");
+    }
+    
+    public bool is_overload_fire_to_electric (List<string> _atkTags, List<string> _defTags, List<ContBuffs.buff> _buffs){
+        // Attacker Tags
+        if (!check_tags_fire (_atkTags)) return false;
+        
+        // Defender Tags
+        if (check_tags_electric (_defTags)) return true;
+        
+        // Defender Buffs
+        if (buff_names_electric (_buffs)) return true;
+        
+        return false;
+    }
+    
+    public bool is_overload_electric_to_fire (List<string> _atkTags, List<string> _defTags, List<ContBuffs.buff> _buffs){
+        // Attacker Tags
+        if (!check_tags_electric (_atkTags)) return false;
+        
+        // Defender Tags
+        if (check_tags_fire (_defTags)) return true;
+        
+        // Defender Buffs
+        if (buff_names_fire (_buffs)) return true;
+        
+        return false;
     }
 
 }

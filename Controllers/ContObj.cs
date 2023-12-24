@@ -383,8 +383,20 @@ public class ContObj : MonoBehaviour {
 
             if (_cur.dur <= 0) {
                 _toRmv.Add (i);
+                
+                if (_obj.buffs [i].attach) {
+                    Destroy (_obj.buffs [i].attach);
+                }
             } else {
-                DB_Buffs.I.update_buff_trigger (_obj, _obj.buffs [i]);
+                DB_Buffs.I.update_buff_trigger (_obj, _cur.name);
+                
+                if (_cur.attach) {
+                    _cur.attach.transform.position = new Vector3(
+                        x: _obj.gameObject.transform.position.x + _cur.atchOffset.x,
+                        y: _obj.gameObject.transform.position.y + _cur.atchOffset.y,
+                        z: _obj.gameObject.transform.position.z - 1 + _cur.atchOffset.z
+                    );
+                }
             }
         }
 

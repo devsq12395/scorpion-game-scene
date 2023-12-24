@@ -12,6 +12,7 @@ public class ContBuffs : MonoBehaviour {
         public float dur;
         public GameObject attach;
         public InGameObject owner;
+        public Vector3 atchOffset;
 
         public buff (string _name) {
             name = _name;
@@ -19,6 +20,8 @@ public class ContBuffs : MonoBehaviour {
 
             dur = 1;
             owner = null;
+            
+            atchOffset = new Vector3 (0, 0, 0);
         }
     }
 

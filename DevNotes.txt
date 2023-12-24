@@ -4,6 +4,10 @@ Found issues:
 - Re-change hero missile to beam
 
 To do:
+- GameUI_InGameTxt.I.create_ingame_txt must not stack to each other when created on the same position
+- Test out overload damage
+- HP and MP bars UI for player
+
 - Add shotgun skill
     - Missile sprite
     - Shotgun missile duration

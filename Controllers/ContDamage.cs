@@ -12,7 +12,7 @@ public class ContDamage : MonoBehaviour {
 
         int _dam = _damOrig;
         
-        _dam = check_tag_effects (_atk, _def, _dam, _tags);
+        _dam = check_tag_effects (_atk, _def, _damOrig, _tags);
 
         _def.hp -= _dam;
 
@@ -23,17 +23,17 @@ public class ContDamage : MonoBehaviour {
         }
     }
     
-    public void lose_hp (InGameObject _def, int _dam) {
-        if (!DB_Conditions.I.dam_condition (_atk, _def)) return;
+    public void lose_hp (InGameObject _def, int _damOrig, List<string> _tags) {
+        if (!DB_Conditions.I.dam_condition (null, _def)) return;
         
         int _dam = _damOrig;
         
-        _dam = check_tag_effects (_atk, _def, _dam, _tags);
+        _dam = check_tag_effects (null, _def, _damOrig, _tags);
 
         _def.hp -= _dam;
         if (_def.hp < 1) _def.hp = 1;
 
-        post_dam_events (_atk, _def, _dam);
+        post_dam_events (null, _def, _dam);
     }
 
     public void kill (InGameObject _def){
@@ -47,12 +47,24 @@ public class ContDamage : MonoBehaviour {
             ContBuffs.I.add_buff (_def, "invulnerable");
         }
         
+        // Codes that require an attacker goes here
+        if (_atk != null) {
+            
+        }
+        
         // Dam Text UI
         GameUI_InGameTxt.I.create_ingame_txt (_dam.ToString (), _def.gameObject.transform.position, 2f);
     }
     
-    private int check_tag_effects (InGameObject _atk, InGameObject _def, int _dam, List<string> _tags){
+    private int check_tag_effects (InGameObject _atk, InGameObject _def, int _damOrig, List<string> _tags){
+        int _dam = _damOrig;
         
+        // Overload
+        if (DB_Conditions.I.is_overload_fire_to_electric (_atk.tags, _def.tags, _def.buffs) ||
+            DB_Conditions.I.is_overload_electric_to_fire (_atk.tags, _def.tags, _def.buffs)) {
+                _dam += (int)((float)_dam * 0.2f);
+                GameUI_InGameTxt.I.create_ingame_txt (DB_Strings.I.get_str ("Overload!"), _def.gameObject.transform.position, 2f);
+        }
         
         return _dam;
     }
