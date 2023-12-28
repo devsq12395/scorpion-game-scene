@@ -13,7 +13,7 @@ public class ColTrig_GenericEnemy : ColTrig {
 
         // Propell player on hit
         float _ang = Calculator.I.get_ang_from_2_points_rad (gameObject.gameObject.transform.position, _hit.transform.position) * Mathf.Rad2Deg;
-        ContObj.I.propell_to_angle (_hit, _ang, 15f, 1f, "knocked");
+        ContObj.I.propell_to_angle (_hit, _ang, 15f, 1f, 5f, "knocked");
     }
 
     public override void on_hit_ally (InGameObject _hit){

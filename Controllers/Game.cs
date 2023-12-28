@@ -6,6 +6,8 @@ public class Game : MonoBehaviour {
 
     public static Game I;
 	public void Awake(){ I = this; }
+    
+    public bool gameReady = false;
 
     void Start() {
         // PlayerPrefs for testing
@@ -33,10 +35,16 @@ public class Game : MonoBehaviour {
         ContMap.I.setup_map ();
         ContPlayer.I.setup_player ();
         GameUI_InGameTxt.I.setup ();
+        
+        gameReady = true;
     }
 
     void Update() {
+        if (!gameReady) return;
         
+        ContPlayer.I.update ();
+        
+        MUI_HPBars.I.update_bars ();
     }
 
     // Accesibility

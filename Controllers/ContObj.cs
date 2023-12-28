@@ -137,7 +137,7 @@ public class ContObj : MonoBehaviour {
         LIST OF MOVEMENT TYPES:
         - input_move
         - move_walk_to_pos
-        - propell_to_angle (InGameObject _obj, float _ang, float _spd, float _drag, bool _changeAng = false)
+        - propell_to_angle (InGameObject _obj, float _ang, float _spd, float _drag, float _distLim, bool _changeAng = false)
         - change_velocity
         - const_move_ang_set
         - const_move_dir_set
@@ -203,7 +203,7 @@ public class ContObj : MonoBehaviour {
         }
     }
 
-    public void propell_to_angle (InGameObject _obj, float _ang, float _spd, float _drag, string _propellType, bool _changeAng = false) {
+    public void propell_to_angle (InGameObject _obj, float _ang, float _spd, float _drag, float _distLim, string _propellType, bool _changeAng = false) {
         /*
             KNOWN PROPELL TYPES:
             - "knocked", "dash"
@@ -213,6 +213,8 @@ public class ContObj : MonoBehaviour {
         _obj.propellType = _propellType;
         Vector3 _vel = new Vector3(_spd * Mathf.Cos(_ang * Mathf.Deg2Rad), _spd * Mathf.Sin(_ang * Mathf.Deg2Rad), 0);
         _obj.knockDrag = _drag;
+        _obj.propellDist = _distLim;
+        _obj.propellFirstPos = new Vector2 (_obj.transform.position.x, _obj.transform.position.y);
         change_velocity (_obj, _vel);
     }
 
@@ -224,10 +226,21 @@ public class ContObj : MonoBehaviour {
         if (_obj.propellType == "" || _obj.propellType == "missile") return;
 
         _obj.rb.velocity -= _obj.rb.velocity * _obj.knockDrag * Time.fixedDeltaTime;
-        if (_obj.rb.velocity.magnitude < 1f){
-            _obj.propellType = "";
-            change_velocity (_obj, new Vector3 (0, 0, 0));
+        if (_obj.rb.velocity.magnitude <= 0.25f){
+            propell_stop (_obj);
         }
+        
+        Vector2 _newPos = new Vector2 (_obj.transform.position.x, _obj.transform.position.y);
+        
+        float _dist = Vector2.Distance (_obj.propellFirstPos, _newPos);
+        if (_dist >= _obj.propellDist) {
+            propell_stop (_obj);
+        }
+    }
+    
+    private void propell_stop (InGameObject _obj){
+        _obj.propellType = "";
+        change_velocity (_obj, new Vector3 (0, 0, 0));
     }
 
     public void const_move_ang_set (InGameObject _obj, float _ang, float _spd = 0f){
@@ -271,7 +284,7 @@ public class ContObj : MonoBehaviour {
     }
 
     private void move_bounds (InGameObject _obj){
-        if (DB_Conditions.I.is_check_border (_obj)) return;
+        if (!DB_Conditions.I.is_check_border (_obj)) return;
         
         DB_Maps.mapDetails _details = ContMap.I.details;
         float _xL = _details.size.x, _yL = _details.size.y;

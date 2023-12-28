@@ -29,7 +29,7 @@ public class Skill_Dash : SkillTrig {
         Vector2 _pos = gameObject.transform.position;
 
         ContObj.I.change_facing (_ownerComp, (Calculator.I.is_mouse_left_of_object (_ownerComp) ? "left" : "right"));
-        ContObj.I.propell_to_angle (_ownerComp, Calculator.I.get_ang_from_point_and_mouse (_pos), 50f, 1f, "dash");
+        ContObj.I.propell_to_angle (_ownerComp, Calculator.I.get_ang_from_point_and_mouse (_pos), 50f, 1f, 5f, "dash");
         InGameCamera.I.point_to_target ();
     }
 }

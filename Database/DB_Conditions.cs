@@ -38,7 +38,6 @@ public class DB_Conditions : MonoBehaviour {
     }
     
     public bool is_check_border (InGameObject _obj){
-        if (!_obj.constMovDir_isOn)         return false;
         if (_obj.type != "unit")            return false;
         
         return true;

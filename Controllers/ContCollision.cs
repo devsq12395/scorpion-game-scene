@@ -53,11 +53,11 @@ public class ContCollision : MonoBehaviour {
         collList _chkr;
         for (int i = 0; i < allList.Count; i++) {
             _chkr = allList [i];
-            if ((_chkr.id1 == obj1.id && _chkr.id2 == obj2.id) || (_chkr.id2 == obj2.id && _chkr.id1 == obj1.id)) {
+            if ((_chkr.id1 == obj1.id && _chkr.id2 == obj2.id) || (_chkr.id1 == obj2.id && _chkr.id2 == obj1.id)) {
                 return true;
             }
         }
-
+        
         collList _new = new collList (obj1.id, obj2.id, GameConstants.COLL_DUR);
         allList.Add (_new);
 

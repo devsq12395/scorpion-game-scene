@@ -20,6 +20,10 @@ public class ContPlayer : MonoBehaviour {
         items = new List<DB_Items.Item> ();
         players = new List<InGameObject> ();
     }
+    
+    public void update (){
+        
+    }
 
     public void setup_player (){
         NUMBER_OF_ITEM_SLOTS = 5;

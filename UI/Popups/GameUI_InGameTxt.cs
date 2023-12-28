@@ -27,8 +27,11 @@ public class GameUI_InGameTxt: MonoBehaviour{
     
     public bool isReady;
     
+    private Dictionary<Vector2, int> posUsed;
+    
     public void setup (){
         txtList = new List<InGameTxt> ();
+        posUsed = new Dictionary<Vector2, int> ();
         
         isReady = true;
     }
@@ -37,9 +40,12 @@ public class GameUI_InGameTxt: MonoBehaviour{
         if (!isReady) return;
         
         all_txt_dur ();
+        posUsed.Clear ();
     }
     
     public GameObject create_ingame_txt (string _txt, Vector2 _pos, float _dur){
+        _pos = check_if_pos_used (_pos);
+        
         GameObject _go = DB_Objects.I.get_game_obj ("damTxt");
         _go.transform.position = _pos;
         
@@ -59,6 +65,17 @@ public class GameUI_InGameTxt: MonoBehaviour{
         txtList.Add (_new);
         
         return _go;
+    }
+    
+    private Vector2 check_if_pos_used (Vector2 _pos){
+        if (posUsed.ContainsKey (_pos)) {
+            posUsed [_pos] += 1;
+            _pos.y += 0.2f * posUsed [_pos];
+        } else {
+            posUsed.Add (_pos, 1);
+        }
+        
+        return _pos;
     }
     
     public void all_txt_dur (){
