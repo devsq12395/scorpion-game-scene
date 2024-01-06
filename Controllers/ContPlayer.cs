@@ -110,8 +110,8 @@ public class ContPlayer : MonoBehaviour {
         if (GameUI_Inv.I.mode != "hide") GameUI_Inv.I.refresh_ui_list ();
     }
     
-    public void remove_item (string _name) {
-        items.RemoveAt (get_item_index (_name));
+    public void remove_item (string _id) {
+        items.RemoveAt (get_item_index (_id));
         save_items ();
         
         if (GameUI_Inv.I.mode != "hide") GameUI_Inv.I.refresh_ui_list ();
@@ -131,9 +131,9 @@ public class ContPlayer : MonoBehaviour {
         
     }
     
-    public int get_item_index (string _name){
+    public int get_item_index (string _id){
         for (int i = 0; i < items.Count; i++) {
-            if (items [i].name == _name) {
+            if (items [i].id == _id) {
                 return i;
             }
         }

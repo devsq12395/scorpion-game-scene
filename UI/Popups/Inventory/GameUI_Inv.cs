@@ -71,5 +71,6 @@ public class GameUI_Inv : MonoBehaviour
     
     public void select_item (int _btnInd){
         int _itemNum = (NUM_OF_ITEMS_PER_PAGE * pageCur) + _btnInd;
+        GameUI_ChkItm.I.show (_items [_itemNum]);
     }
 }

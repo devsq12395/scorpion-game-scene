@@ -13,7 +13,9 @@ public class DB_Items : MonoBehaviour {
         public string name, nameUI, equipType;
         public string desc;
         public Sprite sprite;
-        public int stack, stackLim;
+        public int id, stack, stackLim;
+
+        public List<string> options;
 
         public Item (string _name, Sprite _sprite){
             name = _name;
@@ -21,9 +23,12 @@ public class DB_Items : MonoBehaviour {
             desc = "";
             equipType = "";
             sprite = _sprite;
+            id = calculator.I.generate_id ();
 
-            stack = 0;
-            stackLim = 0;
+            stack = 1;
+            stackLim = 1;
+
+            options = new List<string> ();
         }
     }
 
@@ -44,8 +49,6 @@ public class DB_Items : MonoBehaviour {
                 _new.desc = "";
                 _new.equipType = "";
                 _new.sprite = test1;
-                
-                _new.stackLim = 10;
                 break;
                 
             case "test sword":
@@ -53,6 +56,17 @@ public class DB_Items : MonoBehaviour {
                 _new.desc = "";
                 _new.equipType = "weap";
                 _new.sprite = testSword;
+
+                _new.options.AddRange ("equip");
+                
+                _new.stackLim = 10;
+                break;
+
+            case "testUsable":
+                _new.nameUI = "Test Usable";
+                _new.desc = "";
+                _new.equipType = "";
+                _new.sprite = test1;
                 
                 _new.stackLim = 10;
                 break;
@@ -61,18 +75,28 @@ public class DB_Items : MonoBehaviour {
                 _new.nameUI = "Empty";
                 _new.desc = "";
                 _new.sprite = dummy;
-                
-                _new.stackLim = 0;
                 break;
         }
 
         return _new;
     }
-    
-    public void select_item (Item _item, string _mode){
-        switch (_item.name) {
-            case "test sword":
+
+    public void click_options (string _opt){
+        switch (_opt) {
+            case "use": click_options_use (); break;
+            case "equip": break;
+        }
+    }
+
+    private void click_options_use (){
+        DB_Items.Item itemSel = GameUI_ChkItm.I.item;
+
+        switch (itemSel) {
+            case "testUsable":
+                Debug.Log ("Use success");
                 
+                ContPlayer.I.remove_item (item.id);
+                GameUI_ChkItm.I.hide ();
                 break;
         }
     }
