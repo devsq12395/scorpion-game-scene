@@ -55,7 +55,7 @@ public class Calculator : MonoBehaviour {
         System.Text.StringBuilder idBuilder = new System.Text.StringBuilder();
 
         for (int i = 0; i < length; i++) {
-            int randomIndex = Random.Range (0, Characters.Length);
+            int randomIndex = Random.Range (0, _cL.Length);
             char randomChar = _cL [randomIndex];
             idBuilder.Append (randomChar);
         }

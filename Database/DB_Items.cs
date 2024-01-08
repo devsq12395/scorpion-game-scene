@@ -11,9 +11,9 @@ public class DB_Items : MonoBehaviour {
 
     public struct Item {
         public string name, nameUI, equipType;
-        public string desc;
+        public string desc, id;
         public Sprite sprite;
-        public int id, stack, stackLim;
+        public int stack, stackLim;
 
         public List<string> options;
 
@@ -23,7 +23,7 @@ public class DB_Items : MonoBehaviour {
             desc = "";
             equipType = "";
             sprite = _sprite;
-            id = calculator.I.generate_id ();
+            id = Calculator.I.generate_id ();
 
             stack = 1;
             stackLim = 1;
@@ -57,7 +57,7 @@ public class DB_Items : MonoBehaviour {
                 _new.equipType = "weap";
                 _new.sprite = testSword;
 
-                _new.options.AddRange ("equip");
+                _new.options.AddRange (new string[] { "equip" });
                 
                 _new.stackLim = 10;
                 break;
@@ -91,11 +91,11 @@ public class DB_Items : MonoBehaviour {
     private void click_options_use (){
         DB_Items.Item itemSel = GameUI_ChkItm.I.item;
 
-        switch (itemSel) {
+        switch (itemSel.name) {
             case "testUsable":
                 Debug.Log ("Use success");
                 
-                ContPlayer.I.remove_item (item.id);
+                ContPlayer.I.remove_item (itemSel.id);
                 GameUI_ChkItm.I.hide ();
                 break;
         }
