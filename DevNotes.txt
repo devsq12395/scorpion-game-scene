@@ -3,6 +3,8 @@ Found issues:
 - Re-change hero missile to beam
 
 To do:
+- Move all buff codes from ContObj.cs to ContBuffs.cs
+
 - Test out overload damage
 - More terrain assets and terrain creation
 

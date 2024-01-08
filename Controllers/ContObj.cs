@@ -377,15 +377,12 @@ public class ContObj : MonoBehaviour {
 
     // Buffs
     public bool get_has_buff (InGameObject _obj, string _buff) {
-        foreach (ContBuffs.buff _cur in _obj.buffs) {
-            if (_cur.name == _buff) {
-                return true;
-            }
-        }
-        return false;
+        return _obj.buffs.Any(_cur => _cur.name == _buff);
     }
 
     private void update_buffs (InGameObject _obj){
+        if (!_obj.gameObject) return;
+        
         List<int> _toRmv = new List<int> ();
 
         ContBuffs.buff _cur;
@@ -394,12 +391,8 @@ public class ContObj : MonoBehaviour {
             _cur.dur -= Time.deltaTime;
             _obj.buffs [i] = _cur;
 
-            if (_cur.dur <= 0) {
-                _toRmv.Add (i);
-                
-                if (_obj.buffs [i].attach) {
-                    Destroy (_obj.buffs [i].attach);
-                }
+            if (_cur.dur <= 0 || !_cur.owner ) {
+                ContBuffs.I.remove_buff (_obj, _obj.buffs [i].name, false);
             } else {
                 DB_Buffs.I.update_buff_trigger (_obj, _cur.name);
                 

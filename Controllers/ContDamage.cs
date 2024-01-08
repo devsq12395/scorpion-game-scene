@@ -58,10 +58,12 @@ public class ContDamage : MonoBehaviour {
     
     private int check_tag_effects (InGameObject _atk, InGameObject _def, int _damOrig, List<string> _tags){
         int _dam = _damOrig;
+
+        List<string> _atkTags = ((_atk) ? _atk.tags : new List<string>());
         
         // Overload
-        if (DB_Conditions.I.is_overload_fire_to_electric (_atk.tags, _def.tags, _def.buffs) ||
-            DB_Conditions.I.is_overload_electric_to_fire (_atk.tags, _def.tags, _def.buffs)) {
+        if (DB_Conditions.I.is_overload_fire_to_electric (_atkTags, _def.tags, _def.buffs) ||
+            DB_Conditions.I.is_overload_electric_to_fire (_atkTags, _def.tags, _def.buffs)) {
                 _dam += (int)((float)_dam * 0.2f);
                 GameUI_InGameTxt.I.create_ingame_txt (DB_Strings.I.get_str ("Overload!"), _def.gameObject.transform.position, 2f);
         }
