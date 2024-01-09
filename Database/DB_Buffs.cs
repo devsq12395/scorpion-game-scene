@@ -26,6 +26,7 @@ public class DB_Buffs : MonoBehaviour {
             case "burn": return 4f; break;
             case "burned": return 1f; break;
             case "binding-chains": return 1f; break;
+            case "void-sphere": return 0.5f; break;
             default: return 1f; break;
         }
     }

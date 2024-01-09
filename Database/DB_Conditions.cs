@@ -73,7 +73,6 @@ public class DB_Conditions : MonoBehaviour {
 
     public bool debuff_condition (InGameObject _atk, InGameObject _def) {
         if (_obj.type != "unit")            return false;
-        if (ContBuff.I.get_has_buff (_def, "invulnerable"))                 return false;
 
         if (_atk != null) {
             if (_atk.owner == _def.owner)           return false;
@@ -119,7 +118,7 @@ public class DB_Conditions : MonoBehaviour {
     }
     
      public bool buff_names_electric (List<ContBuffs.buff> _buffs){
-        return _buffs.Any(buff => buff.name == "charged" || buff.name == "binding-chains");
+        return _buffs.Any(buff => buff.name == "charged" || buff.name == "binding-chains" || buff.name == "void-sphere-grounded");
     }
     
     public bool is_overload_fire_to_electric (List<string> _atkTags, List<string> _defTags, List<ContBuffs.buff> _buffs){

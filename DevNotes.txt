@@ -4,7 +4,15 @@ Found issues:
 
 To add on editor:
 - Skill_BindingChains.cs
-- Effects: Binding Chain expl1, Binding Chain expl2, Binding Chain debuff
+- Define Binding Chain expl1, Binding Chain expl2, buf_bindingChains on DB_Objects
+- Skill_VoidSphere.cs
+- Add void sphere missile, set its values
+- Add ColTrig_VoidSphere.cs to void sphere missile
+- Define voidSphereHit and voidSphereCast on DB_Objects
+
+- Design Anastasia
+- Design Seraphine
+    - Guardian girl from the Scottish Highlands, just like her namesake
 
 To do:
 - Test out overload damage
