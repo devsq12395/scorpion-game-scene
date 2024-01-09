@@ -61,7 +61,7 @@ public class ContObj : MonoBehaviour {
 
         pos_limit (_obj);
 
-        update_buffs (_obj);
+        ContBuffs.I.update_buffs (_obj);
         
         timed_life_update (_obj);
 
@@ -317,6 +317,27 @@ public class ContObj : MonoBehaviour {
         _obj.rb.velocity = Vector3.zero;
         _obj.walkTargPos = Vector3.zero;
     }
+
+    // GETs
+    public List<InGameObject> get_objs_in_area (Vector2 _pos, float _range){
+        List<InGameObject> _ret;
+
+        foreach (InGameObject _o in GameObject.FindObjectsOfType<InGameObject>()) {
+            if (Vector2.Distance (inGameObject.gameObject.transform.position, _pos) <= _range) {
+                _ret.Add (_o);
+            }
+        }
+        return _ret;
+    }
+
+    public InGameObject get_obj_with_id (int _id){
+        foreach (InGameObject _o in GameObject.FindObjectsOfType<InGameObject>()) {
+            if (_o.id == _id) {
+                return _o;
+            }
+        }
+        return null;
+    }
     
     // Stats
     private void mp_regen (InGameObject _obj){
@@ -375,42 +396,6 @@ public class ContObj : MonoBehaviour {
         }
     }
 
-    // Buffs
-    public bool get_has_buff (InGameObject _obj, string _buff) {
-        return _obj.buffs.Any(_cur => _cur.name == _buff);
-    }
-
-    private void update_buffs (InGameObject _obj){
-        if (!_obj.gameObject) return;
-        
-        List<int> _toRmv = new List<int> ();
-
-        ContBuffs.buff _cur;
-        for (int i = 0; i < _obj.buffs.Count; i++) {
-            _cur = _obj.buffs [i];
-            _cur.dur -= Time.deltaTime;
-            _obj.buffs [i] = _cur;
-
-            if (_cur.dur <= 0 || !_cur.owner ) {
-                ContBuffs.I.remove_buff (_obj, _obj.buffs [i].name, false);
-            } else {
-                DB_Buffs.I.update_buff_trigger (_obj, _cur.name);
-                
-                if (_cur.attach) {
-                    _cur.attach.transform.position = new Vector3(
-                        x: _obj.gameObject.transform.position.x + _cur.atchOffset.x,
-                        y: _obj.gameObject.transform.position.y + _cur.atchOffset.y,
-                        z: _obj.gameObject.transform.position.z - 1 + _cur.atchOffset.z
-                    );
-                }
-            }
-        }
-
-        for (int i = _toRmv.Count - 1; i >= 0; i--) {
-            _obj.buffs.RemoveAt (_toRmv [i]);
-        }
-    }
-    
     private void timed_life_update (InGameObject _obj){
         if (_obj.timedLife <= 0) return;
         

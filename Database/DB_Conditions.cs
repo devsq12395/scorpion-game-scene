@@ -13,6 +13,8 @@ public class DB_Conditions : MonoBehaviour {
         if (_obj.isAtk)                             return false;
         if (is_a_ui_showing())                      return false;
 
+        if (ContBuffs.I.get_has_buff (_obj, "binding-chains"))              return false;
+
         return true;
     }
 
@@ -20,12 +22,14 @@ public class DB_Conditions : MonoBehaviour {
         if (_obj.isAtk)                             return false;
         if (is_a_ui_showing())                      return false;
 
+        if (ContBuffs.I.get_has_buff (_obj, "binding-chains"))              return false;
+
         return true;
     }
 
     public bool coll_cond (InGameObject _obj) {
         if (_obj.isInvul)                                           return false;
-        if (ContObj.I.get_has_buff (_obj, "invulnerable"))          return false;
+        if (ContBuff.I.get_has_buff (_obj, "invulnerable"))          return false;
 
         return true;
     }
@@ -56,11 +60,23 @@ public class DB_Conditions : MonoBehaviour {
     // Battle
     public bool dam_condition (InGameObject _atk, InGameObject _def) {
         // Does not require an attacker conditions here
-        if (ContObj.I.get_has_buff (_def, "invulnerable"))                 return false;
+        if (_obj.type != "unit")            return false;
+        if (ContBuff.I.get_has_buff (_def, "invulnerable"))                 return false;
 
         // Requires an attacker conditions here
         if (_atk != null) {
-            
+            if (_atk.owner == _def.owner)           return false;
+        }
+
+        return true;
+    }
+
+    public bool debuff_condition (InGameObject _atk, InGameObject _def) {
+        if (_obj.type != "unit")            return false;
+        if (ContBuff.I.get_has_buff (_def, "invulnerable"))                 return false;
+
+        if (_atk != null) {
+            if (_atk.owner == _def.owner)           return false;
         }
 
         return true;
@@ -103,7 +119,7 @@ public class DB_Conditions : MonoBehaviour {
     }
     
      public bool buff_names_electric (List<ContBuffs.buff> _buffs){
-        return _buffs.Any(buff => buff.name == "charged");
+        return _buffs.Any(buff => buff.name == "charged" || buff.name == "binding-chains");
     }
     
     public bool is_overload_fire_to_electric (List<string> _atkTags, List<string> _defTags, List<ContBuffs.buff> _buffs){

@@ -57,6 +57,7 @@ public class InGameObject : MonoBehaviour {
     // Misc
     public float knockDrag;
     public float timedLife;
+    public int controllerID;
 
     // Buffs
     public List <ContBuffs.buff> buffs;

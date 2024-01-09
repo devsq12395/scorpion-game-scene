@@ -16,11 +16,11 @@ public class DB_Objects : MonoBehaviour {
     public GameObject testMissile1, beam1, kitsuneMissile, molotovMsl;
 
     // Effects
-    public GameObject explosion1, explosion1_mini, molotovEfct;
+    public GameObject explosion1, explosion1_mini, molotovEfct, bindChainExp1, bindChainExp2;
     public GameObject damTxt;
     
     // Buffs
-    public GameObject burn;
+    public GameObject buf_burn, buf_bindingChains;
 
     void Start() {
         
@@ -55,11 +55,14 @@ public class DB_Objects : MonoBehaviour {
             case "explosion1":              _refObj = explosion1; break;
             case "explosion1_mini":         _refObj = explosion1_mini; break;
             case "molotovEfct":             _refObj = molotovEfct; break;
+            case "bindChainExp1":             _refObj = bindChainExp1; break;
+            case "bindChainExp2":             _refObj = bindChainExp2; break;
                 
             case "damTxt":                  _refObj = damTxt; break;
                 
             // Buffs
-            case "buffAtch_burn":           _refObj = burn; break;
+            case "buffAtch_burn":                       _refObj = burn; break;
+            case "buffAtch_binding-chains":             _refObj = buf_bindingChains; break;
 
             default: _refObj = dummy; break;
         }

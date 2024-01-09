@@ -26,16 +26,43 @@ public class ContBuffs : MonoBehaviour {
         }
     }
 
-    void Start() {
+    private void update_buffs (InGameObject _obj){
+        if (!_obj.gameObject) return;
         
+        List<int> _toRmv = new List<int> ();
+
+        ContBuffs.buff _cur;
+        for (int i = 0; i < _obj.buffs.Count; i++) {
+            _cur = _obj.buffs [i];
+            _cur.dur -= Time.deltaTime;
+            _obj.buffs [i] = _cur;
+
+            if (_cur.dur <= 0 || !_cur.owner ) {
+                ContBuffs.I.remove_buff (_obj, _obj.buffs [i].name, false);
+            } else {
+                DB_Buffs.I.update_buff_trigger (_obj, _cur.name);
+                
+                if (_cur.attach) {
+                    _cur.attach.transform.position = new Vector3(
+                        x: _obj.gameObject.transform.position.x + _cur.atchOffset.x,
+                        y: _obj.gameObject.transform.position.y + _cur.atchOffset.y,
+                        z: _obj.gameObject.transform.position.z - 1 + _cur.atchOffset.z
+                    );
+                }
+            }
+        }
+
+        for (int i = _toRmv.Count - 1; i >= 0; i--) {
+            _obj.buffs.RemoveAt (_toRmv [i]);
+        }
     }
 
-    void Update() {
-        
+    public bool get_has_buff (InGameObject _obj, string _buff) {
+        return _obj.buffs.Any(_cur => _cur.name == _buff);
     }
 
     public void add_buff (InGameObject _targ, string _buffName) {
-        if (ContObj.I.get_has_buff (_targ, _buffName)) remove_buff (_targ, _buffName);
+        if (get_has_buff (_targ, _buffName)) remove_buff (_targ, _buffName);
 
         buff _new = DB_Buffs.I.get_buff_data (_buffName);
         _new.owner = _targ;

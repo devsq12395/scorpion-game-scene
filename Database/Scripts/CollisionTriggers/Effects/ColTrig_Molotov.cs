@@ -9,11 +9,12 @@ public class ColTrig_Molotov : ColTrig {
     
     public override void on_hit_enemy (InGameObject _hit){
         if (!DB_Conditions.I.coll_cond_missile (_hit))  return;
-        if (ContObj.I.get_has_buff (_hit, "molotov"))   return;
+        if (ContBuff.I.get_has_buff (_hit, "molotov"))   return;
 
-        InGameObject _this = GetComponent <InGameObject> ();
+        InGameObject    _this = GetComponent <InGameObject> (),
+                        _owner = ContObj.I.get_obj_with_id (_this.controllerID);
 
-        ContDamage.I.damage (_this, _hit, dam, damTags);
+        ContDamage.I.damage (_owner, _hit, dam, damTags);
         ContBuffs.I.add_buff (_hit, "molotov");
         ContBuffs.I.add_buff (_hit, "burn");
     }

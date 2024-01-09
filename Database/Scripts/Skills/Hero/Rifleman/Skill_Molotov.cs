@@ -19,5 +19,7 @@ public class Skill_Molotov : SkillTrig {
         InGameObject _msl = ContObj.I.create_missile (missileObj, gameObject.transform.position, _ownerComp.owner, _ang).GetComponent <InGameObject> ();
         ContObj.I.const_move_ang_set (_msl, Calculator.I.get_ang_from_point_and_mouse (gameObject.transform.position), _msl.speed);
         _msl.timedLife = 0.6f;
+
+        _msl.controllerID = _ownerComp.id;
     }
 }

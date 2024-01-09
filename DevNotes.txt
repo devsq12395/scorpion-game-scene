@@ -2,9 +2,11 @@
 Found issues:
 - Re-change hero missile to beam
 
-To do:
-- Move all buff codes from ContObj.cs to ContBuffs.cs
+To add on editor:
+- Skill_BindingChains.cs
+- Effects: Binding Chain expl1, Binding Chain expl2, Binding Chain debuff
 
+To do:
 - Test out overload damage
 - More terrain assets and terrain creation
 
@@ -29,17 +31,6 @@ To do:
 Low Prio:
 - Molotov new sprite
 
-To check:
-
 Advanced To do:
 - Save hero details in JSON format
 - Save item details in JSON format
-
-On Unity Editor:
-- Add tags for all objects
-- Samurai character
-
-Left off at:
-- UI/Inventory/GameUI_ChkItm.cs
-
-Not in Unity Editor:

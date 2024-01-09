@@ -7,7 +7,7 @@ public class ContDamage : MonoBehaviour {
     public static ContDamage I;
 	public void Awake(){ I = this; }
 
-    public void damage (InGameObject _atk, InGameObject _def, int _damOrig, List<string> _tags) {
+    public void damage (InGameObject _atk, InGameObject _def, int _damOrig, List<string> _extraTags_atk) {
         if (!DB_Conditions.I.dam_condition (_atk, _def)) return;
 
         int _dam = _damOrig;

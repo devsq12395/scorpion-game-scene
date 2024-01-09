@@ -23,5 +23,7 @@ public class Skill_Kitsune : SkillTrig {
         InGameObject _missileComp = _missile.GetComponent <InGameObject> ();
 
         ContObj.I.const_move_ang_set (_missileComp, _ang, _missileComp.speed);
+
+        _missile.controllerID = _ownerComp.id;
     }
 }
