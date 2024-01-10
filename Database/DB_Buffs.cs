@@ -27,13 +27,14 @@ public class DB_Buffs : MonoBehaviour {
             case "burned": return 1f; break;
             case "binding-chains": return 1f; break;
             case "void-sphere": return 0.5f; break;
+            case "frost-wave": return 4f; break;
             default: return 1f; break;
         }
     }
 
     public bool get_buff_has_attach (string _name) {
         switch (_name) {
-            case "burn": case "binding-chains": 
+            case "burn": case "binding-chains": case "frost-wave": 
                 return true;
                 break;
             default: return false; break;
@@ -59,5 +60,20 @@ public class DB_Buffs : MonoBehaviour {
         }
         
         return _ret;
+    }
+
+    public void calc_buff_speed_bonus (InGameObject _obj){
+        float _spd = _obj.speed;
+
+        for (ContBuffs.buff _b in _obj.buffs) {
+            switch (_b.name) {
+                // Increase
+
+                // Decrease
+                case "frost-wave": _spd -= 1.5f; break;
+            }
+        }
+        if (_spd < 0) _spd = 0.001f;
+        _obj.speed = _spd;
     }
 }

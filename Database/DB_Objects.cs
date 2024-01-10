@@ -16,8 +16,12 @@ public class DB_Objects : MonoBehaviour {
     public GameObject testMissile1, beam1, kitsuneMissile, molotovMsl;
 
     // Effects
-    public GameObject explosion1, explosion1_mini, molotovEfct, bindChainExp1, bindChainExp2, voidSphereHit, voidSphereCast;
+    public GameObject explosion1, explosion1_mini, molotovEfct, bindChainExp1, bindChainExp2, voidSphereHit, voidSphereCast, frostWaveHit, 
+        frostWaveCast;
     public GameObject damTxt;
+
+    // Dummies
+    public GameObject blizzardDummy;
     
     // Buffs
     public GameObject buf_burn, buf_bindingChains, buf_voidSphereGrounded;
@@ -59,6 +63,8 @@ public class DB_Objects : MonoBehaviour {
             case "bindChainExp2":             _refObj = bindChainExp2; break;
             case "voidSphereHit":             _refObj = voidSphereHit; break;
             case "voidSphereCast":             _refObj = voidSphereCast; break;
+            case "frostWaveHit":             _refObj = frostWaveHit; break;
+            case "frostWaveCast":             _refObj = frostWaveCast; break;
                 
             case "damTxt":                  _refObj = damTxt; break;
                 
@@ -66,6 +72,9 @@ public class DB_Objects : MonoBehaviour {
             case "buffAtch_burn":                       _refObj = burn; break;
             case "buffAtch_binding-chains":             _refObj = buf_bindingChains; break;
             case "buffAtch_void-sphere-grounded":             _refObj = buf_voidSphereGrounded; break;
+
+            // Dummies
+            case "blizzardDummy":             _refObj = blizzardDummy; break;
 
             default: _refObj = dummy; break;
         }

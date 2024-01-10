@@ -9,12 +9,22 @@ To add on editor:
 - Add void sphere missile, set its values
 - Add ColTrig_VoidSphere.cs to void sphere missile
 - Define voidSphereHit and voidSphereCast on DB_Objects
+- Add frost wave missile, set its values
+- Add ColTrig_FrostWave.cs to void sphere missile
+- Define frostWaveHit and frostWaveCast on DB_Objects
+- Create "blizzardDummy" object on DB_Objects
+    - Add damage tags on this object
+- Add "Evt_BlizzardUpd.cs" to this object, add the "update" tag to this component. Check how on Evt_Molotov component on Molotov
+- Define blizzardExplode on DB_Objects
 
 - Design Anastasia
 - Design Seraphine
     - Guardian girl from the Scottish Highlands, just like her namesake
 
 To do:
+- Universal speed quantity
+    - Right now, Unit speed is different from Missile speed
+
 - Test out overload damage
 - More terrain assets and terrain creation
 

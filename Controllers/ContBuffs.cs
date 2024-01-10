@@ -67,6 +67,8 @@ public class ContBuffs : MonoBehaviour {
         buff _new = DB_Buffs.I.get_buff_data (_buffName);
         _new.owner = _targ;
         _targ.buffs.Add (_new);
+
+        DB_Buffs.I.calc_buff_speed_bonus (_targ);
     }
 
     public void remove_buff (InGameObject _targ, string _buffName, bool _remFromArray = true){
@@ -76,5 +78,7 @@ public class ContBuffs : MonoBehaviour {
             Destroy (_targ.buffs [_i].attach);
             if (_remFromArray) _targ.buffs.RemoveAt (_i);
         }
+
+        DB_Buffs.I.calc_buff_speed_bonus (_targ);
     }
 }

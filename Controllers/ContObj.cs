@@ -63,6 +63,7 @@ public class ContObj : MonoBehaviour {
 
         ContBuffs.I.update_buffs (_obj);
         
+        evt_on_update (_obj);
         timed_life_update (_obj);
 
         _obj.gameObject.transform.position = new Vector3 (_obj.curPos.x, _obj.curPos.y, _obj.zPos);
@@ -391,6 +392,13 @@ public class ContObj : MonoBehaviour {
     
     public void evt_on_death (InGameObject _obj){
         List<EvtTrig> _evts = get_evts_with_trigger_name (_obj, "death");
+        foreach (EvtTrig _evt in _evts) {
+            _evt.use ();
+        }
+    }
+
+    public void evt_on_update (InGameObject _obj){
+        List<EvtTrig> _evts = get_evts_with_trigger_name (_obj, "update");
         foreach (EvtTrig _evt in _evts) {
             _evt.use ();
         }
