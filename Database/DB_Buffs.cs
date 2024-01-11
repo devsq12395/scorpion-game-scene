@@ -44,7 +44,7 @@ public class DB_Buffs : MonoBehaviour {
     public void update_buff_trigger (InGameObject _obj, string _buff){
         switch (_buff) {
             case "burn":
-                if (ContBuff.I.get_has_buff (_obj, "burned")) return;
+                if (ContBuffs.I.get_has_buff (_obj, "burned")) return;
                 
                 ContDamage.I.lose_hp (_obj, 1, new List<string>{"burn"});
                 ContBuffs.I.add_buff (_obj, "burned");
@@ -65,7 +65,7 @@ public class DB_Buffs : MonoBehaviour {
     public void calc_buff_speed_bonus (InGameObject _obj){
         float _spd = _obj.speed;
 
-        for (ContBuffs.buff _b in _obj.buffs) {
+        foreach (ContBuffs.buff _b in _obj.buffs) {
             switch (_b.name) {
                 // Increase
 

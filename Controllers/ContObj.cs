@@ -321,10 +321,10 @@ public class ContObj : MonoBehaviour {
 
     // GETs
     public List<InGameObject> get_objs_in_area (Vector2 _pos, float _range){
-        List<InGameObject> _ret;
+        List<InGameObject> _ret = new List<InGameObject>();
 
         foreach (InGameObject _o in GameObject.FindObjectsOfType<InGameObject>()) {
-            if (Vector2.Distance (inGameObject.gameObject.transform.position, _pos) <= _range) {
+            if (Vector2.Distance (_o.gameObject.transform.position, _pos) <= _range) {
                 _ret.Add (_o);
             }
         }

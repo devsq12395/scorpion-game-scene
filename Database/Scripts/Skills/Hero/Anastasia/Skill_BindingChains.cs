@@ -7,6 +7,7 @@ public class Skill_BindingChains : SkillTrig {
     public override void use_active (){
         int DAM = 4;
         float RANGE = 10f;
+        List<string> damTags = new List<string>(){"electric"};
 
         InGameObject _owner = gameObject.GetComponent <InGameObject> ();
         Vector2 _pos = gameObject.transform.position;
@@ -19,9 +20,9 @@ public class Skill_BindingChains : SkillTrig {
             if (!DB_Conditions.I.debuff_condition (_owner, _o)) continue;
 
             ContEffect.I.create_effect ("bindChainExp2", gameObject.transform.position);
-            ContBuffs.I.add_buff (DAM, "binding-chains");
+            ContBuffs.I.add_buff (_o, "binding-chains");
             GameUI_InGameTxt.I.create_ingame_txt (DB_Strings.I.get_str ("Binded!"), _o.gameObject.transform.position, 2f);
-            ContDamage.I.damage (_owner, _hit, dam, damTags);
+            ContDamage.I.damage (_owner, _o, DAM, damTags);
         }
     }
 }

@@ -26,7 +26,7 @@ public class ContBuffs : MonoBehaviour {
         }
     }
 
-    private void update_buffs (InGameObject _obj){
+    public void update_buffs (InGameObject _obj){
         if (!_obj.gameObject) return;
         
         List<int> _toRmv = new List<int> ();

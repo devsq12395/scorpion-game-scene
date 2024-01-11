@@ -24,6 +24,6 @@ public class Skill_Kitsune : SkillTrig {
 
         ContObj.I.const_move_ang_set (_missileComp, _ang, _missileComp.speed);
 
-        _missile.controllerID = _ownerComp.id;
+        _missileComp.controllerID = _ownerComp.id;
     }
 }

@@ -69,7 +69,7 @@ public class DB_Objects : MonoBehaviour {
             case "damTxt":                  _refObj = damTxt; break;
                 
             // Buffs
-            case "buffAtch_burn":                       _refObj = burn; break;
+            case "buffAtch_burn":                       _refObj = buf_burn; break;
             case "buffAtch_binding-chains":             _refObj = buf_bindingChains; break;
             case "buffAtch_void-sphere-grounded":             _refObj = buf_voidSphereGrounded; break;
 

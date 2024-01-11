@@ -12,7 +12,7 @@ public class ContDamage : MonoBehaviour {
 
         int _dam = _damOrig;
         
-        _dam = check_tag_effects (_atk, _def, _damOrig, _tags);
+        _dam = check_tag_effects (_atk, _def, _damOrig, _extraTags_atk);
 
         _def.hp -= _dam;
 

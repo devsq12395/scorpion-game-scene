@@ -29,7 +29,7 @@ public class DB_Conditions : MonoBehaviour {
 
     public bool coll_cond (InGameObject _obj) {
         if (_obj.isInvul)                                           return false;
-        if (ContBuff.I.get_has_buff (_obj, "invulnerable"))          return false;
+        if (ContBuffs.I.get_has_buff (_obj, "invulnerable"))          return false;
 
         return true;
     }
@@ -60,8 +60,8 @@ public class DB_Conditions : MonoBehaviour {
     // Battle
     public bool dam_condition (InGameObject _atk, InGameObject _def) {
         // Does not require an attacker conditions here
-        if (_obj.type != "unit")            return false;
-        if (ContBuff.I.get_has_buff (_def, "invulnerable"))                 return false;
+        if (_def.type != "unit")            return false;
+        if (ContBuffs.I.get_has_buff (_def, "invulnerable"))                 return false;
 
         // Requires an attacker conditions here
         if (_atk != null) {
@@ -72,7 +72,7 @@ public class DB_Conditions : MonoBehaviour {
     }
 
     public bool debuff_condition (InGameObject _atk, InGameObject _def) {
-        if (_obj.type != "unit")            return false;
+        if (_def.type != "unit")            return false;
 
         if (_atk != null) {
             if (_atk.owner == _def.owner)           return false;

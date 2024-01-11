@@ -9,7 +9,7 @@ public class ColTrig_VoidSphere : ColTrig {
     
     public override void on_hit_enemy (InGameObject _hit){
         if (!DB_Conditions.I.coll_cond_missile (_hit))  return;
-        if (ContBuff.I.get_has_buff (_hit, "void-sphere"))   return;
+        if (ContBuffs.I.get_has_buff (_hit, "void-sphere"))   return;
 
         InGameObject    _this = GetComponent <InGameObject> (),
                         _owner = ContObj.I.get_obj_with_id (_this.controllerID);
