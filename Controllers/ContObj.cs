@@ -63,6 +63,7 @@ public class ContObj : MonoBehaviour {
 
         ContBuffs.I.update_buffs (_obj);
         
+        skill_cd (_obj);
         evt_on_update (_obj);
         timed_life_update (_obj);
 
@@ -394,6 +395,15 @@ public class ContObj : MonoBehaviour {
         List<EvtTrig> _evts = get_evts_with_trigger_name (_obj, "death");
         foreach (EvtTrig _evt in _evts) {
             _evt.use ();
+        }
+    }
+
+    private void skill_cd (InGameObject _obj){
+        SkillTrig[] _skills = _obj.GetComponentsInChildren<SkillTrig>();
+        foreach (SkillTrig _s in _skills) {
+            if (_s.cd <= 0) continue;
+            _s.cd -= Time.deltaTime;
+            if (_s.cd < 0) _s.cd = 0;
         }
     }
 

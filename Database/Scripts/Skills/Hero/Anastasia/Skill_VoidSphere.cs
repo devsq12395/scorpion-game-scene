@@ -7,6 +7,8 @@ public class Skill_VoidSphere : SkillTrig {
     public string missileObj;
     
     public override void use_active (){
+        base.use_active();
+        
         InGameObject _ownerComp = gameObject.GetComponent <InGameObject> ();
 
         ContObj.I.change_velocity (_ownerComp, new Vector2 (0, 0));

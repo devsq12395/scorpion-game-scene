@@ -5,7 +5,9 @@ using UnityEngine.UI;
 
 public class InGameObject : MonoBehaviour {  
     
-    public string name, type; 
+    [Header("------ UNITY EDITOR EDITABLE PARTS ------")]
+    public string name; 
+    public string type;
         // TYPES: unit, missile, collect
         // To be set in Unity GameObject's component
     public int owner, id;
@@ -15,7 +17,10 @@ public class InGameObject : MonoBehaviour {
     public int hitDam;
     public string onHitSFX;
     public List<string> tags;
-    public float speed, zPos;
+    public float speed;
+    
+    [Header("------ NON-EDITABLE PARTS ------")]
+    public float zPos;
 
     // Animation
     public Animator anim;

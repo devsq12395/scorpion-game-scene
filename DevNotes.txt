@@ -2,6 +2,20 @@
 Found issues:
 - Re-change hero missile to beam
 
+Art needed:
+- Anastasia
+- Seraphine
+- Binding Chains
+- Binding Chains Cast
+- Binding Chains Hit
+- Void Sphere
+- Void Sphere Cast
+- Void Sphere Hit
+- Frost Wave
+- Frost Wave cast
+- Blizzard Explode
+- Blizzard Cast
+
 To add on editor:
 - Skill_BindingChains.cs
 - Define Binding Chain expl1, Binding Chain expl2, buf_bindingChains on DB_Objects

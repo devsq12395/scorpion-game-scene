@@ -7,6 +7,8 @@ public class Skill_Dash : SkillTrig {
     public string missileObj;
     
     public override void use_active (){
+        base.use_active();
+        
         float DIST = 3f;
         
         // INSTANT TELE - UNUSED

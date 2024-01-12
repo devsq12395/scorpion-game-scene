@@ -36,6 +36,11 @@ public class ContDamage : MonoBehaviour {
         post_dam_events (null, _def, _dam);
     }
 
+    public void lose_mp (InGameObject _def, int _mc) {
+        _def.mp -= _mc;
+        if (_def.mp <= 0) _def.mp = 0;
+    }
+
     public void kill (InGameObject _def){
         ContObj.I.evt_on_death (_def);
         Destroy (_def.gameObject);

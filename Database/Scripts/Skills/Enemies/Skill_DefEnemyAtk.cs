@@ -7,6 +7,8 @@ public class Skill_DefEnemyAtk : SkillTrig {
     public string missileObj;
     
     public override void use_active (){
+        base.use_active();
+        
         InGameObject _ownerComp = gameObject.GetComponent <InGameObject> ();
 
         GameObject _missile = ContObj.I.create_obj (missileObj, gameObject.transform.position, _ownerComp.owner);

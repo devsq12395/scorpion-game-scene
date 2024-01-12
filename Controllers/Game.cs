@@ -12,8 +12,8 @@ public class Game : MonoBehaviour {
     void Start() {
         // PlayerPrefs for testing
         PlayerPrefs.SetString ("map", "testMap");
-        PlayerPrefs.SetString ("player_charName1", "samurai");
-        PlayerPrefs.SetString ("player_charName2", "hero");
+        PlayerPrefs.SetString ("player_charName1", "hero");
+        PlayerPrefs.SetString ("player_charName2", "anastasia");
         PlayerPrefs.SetString ("player_charName3", "");
         PlayerPrefs.SetString ("player_charName4", "");
         PlayerPrefs.SetInt ("player_charSel", 0);

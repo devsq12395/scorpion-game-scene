@@ -10,7 +10,7 @@ public class DB_Objects : MonoBehaviour {
     public GameObject dummy;
 
     // Units
-    public GameObject hero, samurai, greenSlime, orcShaman, kitsune;
+    public GameObject hero, samurai, anastasia, greenSlime, orcShaman, kitsune;
 
     // Missiles
     public GameObject testMissile1, beam1, kitsuneMissile, molotovMsl;
@@ -42,6 +42,7 @@ public class DB_Objects : MonoBehaviour {
             // Player
             case "hero":                    _refObj = hero; break;
             case "samurai":                 _refObj = samurai; break;
+            case "anastasia":               _refObj = anastasia; break;
 
             // Enemies
             case "greenSlime":              _refObj = greenSlime; break;

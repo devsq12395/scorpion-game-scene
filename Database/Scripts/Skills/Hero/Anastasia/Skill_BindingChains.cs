@@ -5,6 +5,8 @@ using UnityEngine;
 public class Skill_BindingChains : SkillTrig {
     
     public override void use_active (){
+        base.use_active();
+        
         int DAM = 4;
         float RANGE = 10f;
         List<string> damTags = new List<string>(){"electric"};
