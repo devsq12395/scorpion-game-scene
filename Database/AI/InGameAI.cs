@@ -10,8 +10,11 @@ public class InGameAI : MonoBehaviour {
     public int state = 0;
     public float stateTime = 0f;
 
+    public Vector2 goPos;
+
     void Start (){
         inGameObj = gameObject.GetComponent <InGameObject> ();
+        goPos = gameObject.transform.position;
 
         on_start ();
     }

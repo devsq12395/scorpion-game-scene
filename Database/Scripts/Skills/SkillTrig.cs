@@ -14,16 +14,21 @@ public class SkillTrig : MonoBehaviour {
     public float cdDef = 0.5f, cd;
 
     public virtual void use_active (){
-        // CD - Reduced at ContObj.cs
-        if (cd > 0) return;
         
-        // MC
-        InGameObject _igo = gameObject.GetComponent <InGameObject> ();
-        if (_igo.mp < mc) return;
-        ContDamage.I.lose_mp (_igo, mc);
     }
 
     public virtual void use_passive (){
         
+    }
+
+    public bool use_check (){
+        if (cd > 0) return false;
+        
+        InGameObject _igo = gameObject.GetComponent <InGameObject> ();
+        if (_igo.mp < mc) return false;
+
+        ContDamage.I.lose_mp (_igo, mc);
+        cd = cdDef;
+        return true;
     }
 }

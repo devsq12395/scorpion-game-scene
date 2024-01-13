@@ -33,14 +33,13 @@ public class InGameCamera : MonoBehaviour {
     public void point_to_target (){
         DB_Maps.mapDetails _details = ContMap.I.details;
         float _targX, _targY;
+        float CAMERA_SIZE_X = 18, CAMERA_SIZE_Y = 9.5f;
 
         _targX = target.position.x;
-        if (_targX < -_details.size.x) _targX = -_details.size.x;
-        else if (_targX > _details.size.x) _targX = _details.size.x;
+        _targX = Mathf.Clamp(_targX, -_details.size.x + CAMERA_SIZE_X, _details.size.x - CAMERA_SIZE_X);
 
         _targY = target.position.y;
-        if (_targY < -_details.size.y) _targY = -_details.size.y;
-        else if (_targY > _details.size.y) _targY = _details.size.y;
+        _targY = Mathf.Clamp(_targY, -_details.size.y + CAMERA_SIZE_Y, _details.size.y - CAMERA_SIZE_Y);
 
         pos.x = _targX;
         pos.y = _targY;
@@ -48,7 +47,7 @@ public class InGameCamera : MonoBehaviour {
 
         transform.position = pos;
         transform.LookAt(target);
-        transform.rotation = Quaternion.Euler (0, 0, 0);
+        transform.rotation = Quaternion.Euler(0, 0, 0);
     }
 
     public void set_target (Transform _target) {

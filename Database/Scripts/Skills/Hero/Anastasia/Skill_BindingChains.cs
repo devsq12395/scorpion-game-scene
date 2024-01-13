@@ -5,7 +5,7 @@ using UnityEngine;
 public class Skill_BindingChains : SkillTrig {
     
     public override void use_active (){
-        base.use_active();
+        if (!use_check()) return;
         
         int DAM = 4;
         float RANGE = 10f;

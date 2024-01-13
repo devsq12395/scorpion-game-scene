@@ -7,7 +7,7 @@ public class Skill_Molotov : SkillTrig {
     public string missileObj;
     
     public override void use_active (){
-        base.use_active();
+        if (!use_check()) return;
         
         InGameObject _ownerComp = gameObject.GetComponent <InGameObject> ();
 

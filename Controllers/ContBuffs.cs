@@ -38,7 +38,8 @@ public class ContBuffs : MonoBehaviour {
             _obj.buffs [i] = _cur;
 
             if (_cur.dur <= 0 || !_cur.owner ) {
-                ContBuffs.I.remove_buff (_obj, _obj.buffs [i].name, false);
+                remove_buff (_obj, _obj.buffs [i].name, false);
+                _toRmv.Add (i);
             } else {
                 DB_Buffs.I.update_buff_trigger (_obj, _cur.name);
                 
@@ -48,6 +49,7 @@ public class ContBuffs : MonoBehaviour {
                         y: _obj.gameObject.transform.position.y + _cur.atchOffset.y,
                         z: _obj.gameObject.transform.position.z - 1 + _cur.atchOffset.z
                     );
+                    Debug.Log (_cur.attach.transform.position);
                 }
             }
         }
