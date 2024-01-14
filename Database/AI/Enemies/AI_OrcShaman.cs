@@ -6,9 +6,7 @@ public class AI_OrcShaman : InGameAI {
 
 
     private Vector2 randPoint;
-    public override void on_start (){
-        
-    }
+    
     public override void on_update (){
         stateTime += Time.deltaTime;
 

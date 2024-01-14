@@ -5,21 +5,28 @@ using UnityEngine;
 public class InGameAI : MonoBehaviour {
 
     public InGameObject inGameObj;
-    public bool isReady;
+    public bool isStart, isReady;
 
     public int state = 0;
     public float stateTime = 0f;
 
     public Vector2 goPos;
 
-    void Start (){
+    public virtual void on_start (){
         inGameObj = gameObject.GetComponent <InGameObject> ();
-        goPos = gameObject.transform.position;
 
-        on_start ();
+        Debug.Log ("asd");
+    }
+
+    public virtual void on_ready (){
+        
     }
 
     void Update (){
+        if (!isStart) {
+            on_start ();
+            isStart = true;
+        }
         if (!isReady) {
             on_ready ();
             isReady = true;
@@ -28,15 +35,7 @@ public class InGameAI : MonoBehaviour {
         on_update ();
     }
 
-    public virtual void on_start (){
-
-    }
-
     public virtual void on_update (){
 
-    }
-
-    public virtual void on_ready (){
-        
     }
 }

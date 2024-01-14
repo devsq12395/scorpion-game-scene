@@ -137,8 +137,8 @@ public class ContObj : MonoBehaviour {
     // Movement
     /*
         LIST OF MOVEMENT TYPES:
-        - input_move
-        - move_walk_to_pos
+        - input_move - uses "Vector2.MoveTowards"
+        - move_walk_to_pos - uses "Vector2.MoveTowards"
         - propell_to_angle (InGameObject _obj, float _ang, float _spd, float _drag, float _distLim, bool _changeAng = false)
         - change_velocity
         - const_move_ang_set

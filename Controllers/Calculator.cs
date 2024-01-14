@@ -7,9 +7,9 @@ public class Calculator : MonoBehaviour {
     public static Calculator I;
 	public void Awake(){ I = this; }
 
-    public Vector2 get_pos_on_dist (float _ang, float _dist){
-        float _x = transform.position.x + _dist * Mathf.Cos(_ang * Mathf.Deg2Rad);
-        float _y = transform.position.y + _dist * Mathf.Sin(_ang * Mathf.Deg2Rad);
+    public Vector2 get_pos_on_dist (Vector2 _pos, float _ang, float _dist){
+        float _x = _pos.x + _dist * Mathf.Cos(_ang * Mathf.Deg2Rad);
+        float _y = _pos.y + _dist * Mathf.Sin(_ang * Mathf.Deg2Rad);
 
         return new Vector2(_x, _y);
     }
