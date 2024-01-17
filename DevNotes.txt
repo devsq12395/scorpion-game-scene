@@ -36,6 +36,8 @@ To add on editor:
     - Guardian girl from the Scottish Highlands, just like her namesake
 
 To do:
+- AI_Zombie.cs needs fixing
+
 - Universal speed quantity
     - Right now, Unit speed is different from Missile speed
 
